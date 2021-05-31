@@ -1,5 +1,7 @@
+import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:world_timer/pages/choose_location.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -37,6 +39,7 @@ class _HomeState extends State<Home> {
               children: [
                 FlatButton.icon(
                   onPressed: () async {
+
                    dynamic result = await Navigator.pushNamed(context, '/location');
                    setState(() {
                      data = {
@@ -79,12 +82,36 @@ class _HomeState extends State<Home> {
                     fontSize: 66.0,
                     color: Colors.white,
                   ),
-                )
+                ),
+                SizedBox(height: 20.0),
+                RaisedButton(
+                  child: Text('Chill'),
+                  onPressed: (){
+                    Navigator.of(context).push(_createRoute());
+                  },
+                ),
               ],
             ),
           ),
         )
       ),
+    );
+  }
+
+  Route _createRoute() {
+    return PageRouteBuilder(
+      transitionDuration: Duration(seconds: 1),
+      pageBuilder: (context, animation, secondaryAnimation) => ChooseLocation(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        animation=CurvedAnimation(
+          parent: animation, curve: Curves.elasticInOut
+        );
+        return ScaleTransition(
+          alignment: Alignment.center,
+          scale: animation,
+          child: child,
+        );
+      },
     );
   }
 }
